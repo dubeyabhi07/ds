@@ -1,0 +1,46 @@
+
+
+def solve(s):
+    i=0
+    res = [0 for i in range(27)]
+    while(i<len(s)):
+        ch = None
+        print(i, res)
+        if(s[i]=="1" or s[i]=="2"):
+           print("outer")
+           if((i+2)<len(s) and s[i+2]=="#"):
+               print("inner ")
+               ch = int(s[i]+s[i+1])
+               i = i+3
+           else:
+               ch = int(s[i])
+               i+=1
+        else:
+            ch  =int(s[i])
+            i+=1
+        
+        if(i==len(s)):
+            res[ch]+=1
+        
+        elif(i<len(s) and s[i]!="("):
+            res[ch]+=1
+            continue
+        
+        elif(i<len(s)):
+            i+=1
+            temp = ""
+            while(s[i] != ")"):
+                temp = temp+s[i]
+                i=i+1
+                
+            res[ch] = res[ch]+int(temp)
+            i+=1
+            
+    
+    print(res)
+    
+    
+solve("12(5)27#24#(1232)5")
+        
+            
+                
