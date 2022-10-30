@@ -1,0 +1,71 @@
+// Procedure:
+// Step 1: First find count of atmost k distinct characters (k will range from 0 to 26)
+// Step 2: Find count of exactly k distinct characters using: exactly(k) = atmost(k) - atmost(k-1)
+// Step 3: Find count of atleast k disctinct characters using suffix sum
+
+// Time omplexity: O(n*26)
+
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define max3(a, b, c) max(max(a, b), c)
+#define min3(a, b, c) min(min(a, b), c)
+typedef pair<int, int> pi;
+
+const int inf = 1e9;
+const int maxn = 1e5 + 5;
+const int mod = 1e9 + 7;
+
+// gives count of atmost k distinct values using sliding window
+int distinct(string &s, int k)
+{
+    map<char, int> mp;
+    int n = s.size();
+    int start = 0, end = 0;
+    int res = 0;
+    int cnt = 0;
+    while (end < n)
+    {
+        mp[s[end]]++;
+        if (mp[s[end]] == 1)
+            cnt++;
+        while (start < end && cnt > k)
+        {
+            mp[s[start]]--;
+            if (mp[s[start]] == 0)
+                cnt--;
+            start++;
+        }
+        end++;
+        res += (end - start);
+    }
+    return res;
+}
+
+int32_t main()
+{
+    string s;
+    cin >> s;
+    int n = s.length();
+    // store count of atmost k distinct characters
+    vector<int> v(27);
+    for (int i = 1; i <= 26; i++)
+    {
+        v[i] = distinct(s, i);
+    }
+    // store count of exactly k distinct characters
+    // exactly k = atmost(k) - atmost(k-1)
+    vector<int> res(26);
+    for (int i = 1; i <= 26; i++)
+    {
+        res[i - 1] = v[i] - v[i - 1];
+    }
+    // store count of atleast k distinct characters using suffix sum
+    for (int i = 24; i >= 0; i--)
+    {
+        res[i] += res[i + 1];
+    }
+    for (auto i : res)
+        cout << i << " ";
+    return 0;
+}
