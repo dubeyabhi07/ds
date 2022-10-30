@@ -1,0 +1,34 @@
+const binarySearch = (arr, target, lo = 0, hi = arr.length - 1) => {
+    if (lo > hi) {
+        return -1;
+    }
+    let mid = lo + ((hi - lo) >> 1)
+    if (arr[mid] === target && (arr[mid + 1] > target || mid === arr.length - 1)) {
+        return mid
+    } else if (arr[mid] < target || arr[mid] === target) {
+        return binarySearch(arr, target, mid + 1, hi)
+    } else {
+        return binarySearch(arr, target, lo, mid - 1)
+    }
+}
+
+const solve = (k) => {
+    let count = 0;
+    let ab = [];
+    for (let [i, a] of A.entries())
+        for (let [j, b] of B.entries()) {
+            ab.push(a + b);
+        }
+
+    ab = ab.sort((a, b) => a - b);
+    for (let [i, c] of C.entries())
+        for (let [j, d] of D.entries()) {
+            let sum = k - (c + d);
+            let index = binarySearch(ab, sum);
+            if (index > -1) {
+                count += index + 1
+            }
+        }
+
+    return count;
+}
